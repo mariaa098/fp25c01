@@ -151,6 +151,7 @@ import java.util.Scanner;
             case CROSS:   System.out.print(" X "); break;
             case NOUGHT:  System.out.print(" O "); break;
             case NO_SEED: System.out.print("   "); break;
+            //test
         }
     }
 }
