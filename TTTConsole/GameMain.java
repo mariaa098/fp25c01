@@ -12,10 +12,10 @@ public class GameMain extends JPanel {
 
     // Define named constants for the drawing graphics
     public static final String TITLE = "Tic Tac Toe";
-    public static final Color COLOR_BG = Color.WHITE;
+    public static final Color COLOR_BG = new Color(245, 245, 250);
     public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
-    public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red #EF6950
-    public static final Color COLOR_NOUGHT = new Color(64, 154, 225); // Blue #409AE1
+    public static final Color COLOR_CROSS = new Color(102, 51, 153);  // Red #EF6950
+    public static final Color COLOR_NOUGHT = new Color(255, 127, 80); // Blue #409AE1
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
     // Define game objects
@@ -126,13 +126,13 @@ public class GameMain extends JPanel {
             statusBar.setForeground(Color.BLACK);
             statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
         } else if (currentState == State.DRAW) {
-            statusBar.setForeground(Color.RED);
+            statusBar.setForeground(Color.black);
             statusBar.setText("It's a Draw! Click to play again.");
         } else if (currentState == State.CROSS_WON) {
-            statusBar.setForeground(Color.RED);
+            statusBar.setForeground(new Color(102, 51, 153));
             statusBar.setText("'X' Won! Click to play again.");
         } else if (currentState == State.NOUGHT_WON) {
-            statusBar.setForeground(Color.RED);
+            statusBar.setForeground(new Color(255, 127, 80));
             statusBar.setText("'O' Won! Click to play again.");
         }
     }
@@ -158,10 +158,10 @@ public class GameMain extends JPanel {
     private void playGameStateSound(State gameState, Seed winner) {
         switch (gameState) {
             case CROSS_WON:
-                playSound("sound_win.wav");  // Sound menang
+                playSound("winning10s.wav");  // Sound menang
                 break;
             case NOUGHT_WON:
-                playSound("sound_win.wav");  // Sound menang
+                playSound("winning10s.wav");  // Sound menang
                 break;
             case DRAW:
                 playSound("sound_draw.wav"); // Sound seri
