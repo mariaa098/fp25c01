@@ -158,10 +158,10 @@ public class GameMain extends JPanel {
     private void playGameStateSound(State gameState, Seed winner) {
         switch (gameState) {
             case CROSS_WON:
-                playSound("winning10s.wav");  // Sound menang
+                playSound("sound_win.wav");  // Sound menang
                 break;
             case NOUGHT_WON:
-                playSound("winning10s.wav");  // Sound menang
+                playSound("sound_win.wav");  // Sound menang
                 break;
             case DRAW:
                 playSound("sound_draw.wav"); // Sound seri
