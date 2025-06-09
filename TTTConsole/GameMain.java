@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.sound.sampled.*;
+import java.io.*;
 /**
  * Tic-Tac-Toe: Two-player Graphic version with better OO design.
  * The Board and Cell classes are separated in their own classes.
@@ -28,26 +30,50 @@ public class GameMain extends JPanel {
         // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
+            public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-                // Get the row and column clicked
                 int row = mouseY / Cell.SIZE;
                 int col = mouseX / Cell.SIZE;
 
                 if (currentState == State.PLAYING) {
                     if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
                             && board.cells[row][col].content == Seed.NO_SEED) {
-                        // Update cells[][] and return the new game state after the move
+
+                        // Update cell content
+                        board.cells[row][col].content = currentPlayer;
+
+                        // Play move sound
+                        if (currentPlayer == Seed.CROSS) {
+                            playSound("sound_x.wav");
+                        } else {
+                            playSound("sound_o.wav");
+                        }
+
+                        // Check game state
+                        State previousState = currentState;
                         currentState = board.stepGame(currentPlayer, row, col);
+
+                        // Play game ending sound if state changed
+                        if (previousState == State.PLAYING && currentState != State.PLAYING) {
+                            // Delay sedikit agar sound move selesai dulu
+                            Timer timer = new Timer(300, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    playGameStateSound(currentState, currentPlayer);
+                                    ((Timer)e.getSource()).stop(); // Stop timer
+                                }
+                            });
+                            timer.start();
+                        }
+
                         // Switch player
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                     }
-                } else {        // game over
-                    newGame();  // restart the game
+                } else {
+                    newGame();  // restart
                 }
-                // Refresh the drawing canvas
-                repaint();  // Callback paintComponent().
+                repaint();
             }
         });
 
@@ -111,6 +137,41 @@ public class GameMain extends JPanel {
         }
     }
 
+    private void playSound(String soundFileName) {
+        try {
+            // Untuk file di dalam package/resources
+            InputStream audioSrc = getClass().getResourceAsStream("/" + soundFileName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(audioSrc);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void playGameStateSound(State gameState, Seed winner) {
+        switch (gameState) {
+            case CROSS_WON:
+                playSound("sound_win.wav");  // Sound menang
+                break;
+            case NOUGHT_WON:
+                playSound("sound_win.wav");  // Sound menang
+                break;
+            case DRAW:
+                playSound("sound_draw.wav"); // Sound seri
+                break;
+            default:
+                // Tidak ada sound untuk PLAYING state
+                break;
+        }
+    }
+
     /** The entry "main" method */
     public static void main(String[] args) {
         // Run GUI construction codes in Event-Dispatching thread for thread safety
@@ -124,6 +185,7 @@ public class GameMain extends JPanel {
                 frame.setLocationRelativeTo(null); // center the application window
                 frame.setVisible(true);            // show it
             }
+
         });
     }
 }
