@@ -139,7 +139,6 @@ public class GameMain extends JPanel {
 
     private void playSound(String soundFileName) {
         try {
-            // Untuk file di dalam package/resources
             InputStream audioSrc = getClass().getResourceAsStream("/" + soundFileName);
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(audioSrc);
             Clip clip = AudioSystem.getClip();
@@ -158,16 +157,15 @@ public class GameMain extends JPanel {
     private void playGameStateSound(State gameState, Seed winner) {
         switch (gameState) {
             case CROSS_WON:
-                playSound("winning10s.wav");  // Sound menang
+                playSound("sound_win.wav");  // Sound menang
                 break;
             case NOUGHT_WON:
-                playSound("winning10s.wav");  // Sound menang
+                playSound("sound_win.wav");  // Sound menang
                 break;
             case DRAW:
                 playSound("sound_draw.wav"); // Sound seri
                 break;
             default:
-                // Tidak ada sound untuk PLAYING state
                 break;
         }
     }
