@@ -3,31 +3,26 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 import java.io.*;
-/**
- * Tic-Tac-Toe: Two-player Graphic version with better OO design.
- * The Board and Cell classes are separated in their own classes.
- */
-public class GameMain extends JPanel {
-    private static final long serialVersionUID = 1L; // to prevent serializable warning
 
-    // Define named constants for the drawing graphics
+public class GameMain extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     public static final String TITLE = "Tic Tac Toe";
     public static final Color COLOR_BG = new Color(245, 245, 250);
     public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
-    public static final Color COLOR_CROSS = new Color(102, 51, 153);  // Red #EF6950
-    public static final Color COLOR_NOUGHT = new Color(255, 127, 80); // Blue #409AE1
+    public static final Color COLOR_CROSS = new Color(102, 51, 153);
+    public static final Color COLOR_NOUGHT = new Color(255, 127, 80);
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
-    // Define game objects
-    private Board board;         // the game board
-    private State currentState;  // the current state of the game
-    private Seed currentPlayer;  // the current player
-    private JLabel statusBar;    // for displaying status message
+    private Board board;
+    private State currentState;
+    private Seed currentPlayer;
+    private JLabel statusBar;
 
-    /** Constructor to setup the UI and game components */
+    private AIPlayer aiPlayer;
+    private boolean vsAI = true;
+
     public GameMain() {
-
-        // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -40,44 +35,46 @@ public class GameMain extends JPanel {
                     if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
                             && board.cells[row][col].content == Seed.NO_SEED) {
 
-                        // Update cell content
                         board.cells[row][col].content = currentPlayer;
 
-                        // Play move sound
                         if (currentPlayer == Seed.CROSS) {
                             playSound("sound_x.wav");
                         } else {
                             playSound("sound_o.wav");
                         }
 
-                        // Check game state
                         State previousState = currentState;
                         currentState = board.stepGame(currentPlayer, row, col);
 
-                        // Play game ending sound if state changed
                         if (previousState == State.PLAYING && currentState != State.PLAYING) {
-                            // Delay sedikit agar sound move selesai dulu
                             Timer timer = new Timer(300, new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     playGameStateSound(currentState, currentPlayer);
-                                    ((Timer)e.getSource()).stop(); // Stop timer
+                                    ((Timer) e.getSource()).stop();
                                 }
                             });
                             timer.start();
                         }
 
-                        // Switch player
-                        currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                        if (vsAI) {
+                            if (currentState == State.PLAYING) {
+                                currentPlayer = Seed.NOUGHT;
+                                aiMove();
+                                return;
+                            }
+                            currentPlayer = Seed.CROSS;
+                        } else {
+                            currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                        }
                     }
                 } else {
-                    newGame();  // restart
+                    newGame();
                 }
                 repaint();
             }
         });
 
-        // Setup the status bar (JLabel) to display status message
         statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
@@ -87,41 +84,73 @@ public class GameMain extends JPanel {
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
         super.setLayout(new BorderLayout());
-        super.add(statusBar, BorderLayout.PAGE_END); // same as SOUTH
+        super.add(statusBar, BorderLayout.PAGE_END);
         super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-        // account for statusBar in height
         super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
-        // Set up Game
         initGame();
+        chooseMode();
         newGame();
     }
 
-    /** Initialize the game (run once) */
     public void initGame() {
-        board = new Board();  // allocate the game-board
+        board = new Board();
+        aiPlayer = new AIPlayerTableLookup(board);
     }
 
-    /** Reset the game-board contents and the current-state, ready for new game */
     public void newGame() {
         for (int row = 0; row < Board.ROWS; ++row) {
             for (int col = 0; col < Board.COLS; ++col) {
-                board.cells[row][col].content = Seed.NO_SEED; // all cells empty
+                board.cells[row][col].content = Seed.NO_SEED;
             }
         }
-        currentPlayer = Seed.CROSS;    // cross plays first
-        currentState = State.PLAYING;  // ready to play
+        currentPlayer = Seed.CROSS;
+        currentState = State.PLAYING;
+        aiPlayer.setSeed(Seed.NOUGHT);
+        repaint();
     }
 
-    /** Custom painting codes on this JPanel */
+    private void chooseMode() {
+        Object[] options = {"Lawan AI", "Lawan Teman"};
+        int n = JOptionPane.showOptionDialog(
+                null,
+                "Pilih Mode Permainan:",
+                "Mode Permainan",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+        vsAI = (n == JOptionPane.YES_OPTION);
+    }
+
+    private void aiMove() {
+        int[] move = aiPlayer.move();
+        board.cells[move[0]][move[1]].content = aiPlayer.mySeed;
+        playSound("sound_o.wav");
+
+        State prevState = currentState;
+        currentState = board.stepGame(aiPlayer.mySeed, move[0], move[1]);
+
+        if (prevState == State.PLAYING && currentState != State.PLAYING) {
+            Timer timer = new Timer(300, e -> {
+                playGameStateSound(currentState, aiPlayer.mySeed);
+                ((Timer) e.getSource()).stop();
+            });
+            timer.start();
+        }
+
+        currentPlayer = Seed.CROSS;
+        repaint();
+    }
+
     @Override
-    public void paintComponent(Graphics g) {  // Callback via repaint()
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(COLOR_BG); // set its background color
+        setBackground(COLOR_BG);
+        board.paint(g);
 
-        board.paint(g);  // ask the game board to paint itself
-
-        // Print status-bar message
         if (currentState == State.PLAYING) {
             statusBar.setForeground(Color.BLACK);
             statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
@@ -139,13 +168,12 @@ public class GameMain extends JPanel {
 
     private void playSound(String soundFileName) {
         try {
-            // Untuk file di dalam package/resources
             InputStream audioSrc = getClass().getResourceAsStream("/" + soundFileName);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(audioSrc);
+            if (audioSrc == null) return;
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(audioSrc));
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
             clip.start();
-
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     clip.close();
@@ -155,37 +183,29 @@ public class GameMain extends JPanel {
             e.printStackTrace();
         }
     }
+
     private void playGameStateSound(State gameState, Seed winner) {
         switch (gameState) {
             case CROSS_WON:
-                playSound("sound_win.wav");  // Sound menang
-                break;
             case NOUGHT_WON:
-                playSound("sound_win.wav");  // Sound menang
+                playSound("winning10s.wav");
                 break;
             case DRAW:
-                playSound("sound_draw.wav"); // Sound seri
+                playSound("sound_draw.wav");
                 break;
             default:
-                // Tidak ada sound untuk PLAYING state
                 break;
         }
     }
 
-    /** The entry "main" method */
     public static void main(String[] args) {
-        // Run GUI construction codes in Event-Dispatching thread for thread safety
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame(TITLE);
-                // Set the content-pane of the JFrame to an instance of main JPanel
-                frame.setContentPane(new GameMain());
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.pack();
-                frame.setLocationRelativeTo(null); // center the application window
-                frame.setVisible(true);            // show it
-            }
-
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame(TITLE);
+            frame.setContentPane(new GameMain());
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
     }
 }
