@@ -200,6 +200,26 @@ public class GameMain extends JPanel {
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
+
+            String player1 = "";
+            while (player1 == null || player1.trim().isEmpty()) {
+                player1 = JOptionPane.showInputDialog(null, "Player 1 (X):", "Nama Player 1", JOptionPane.PLAIN_MESSAGE);
+                if (player1 == null) System.exit(0); // user cancel
+                if (player1.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nama tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+
+            String player2 = "";
+            while (player2 == null || player2.trim().isEmpty()) {
+                player2 = JOptionPane.showInputDialog(null, "Player 2 (O):", "Nama Player 2", JOptionPane.PLAIN_MESSAGE);
+                if (player2 == null) System.exit(0); // user cancel
+                if (player2.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nama tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
             JFrame frame = new JFrame(TITLE);
             frame.setContentPane(new GameMain());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
