@@ -19,11 +19,38 @@ public class GameMain extends JPanel {
     private Seed currentPlayer;
     private JLabel statusBar;
 
+    private JButton resetButton;
+
 
     private AIPlayer aiPlayer;
     private boolean vsAI = true;
 
     public GameMain() {
+        super.setLayout(new BorderLayout());
+
+        // ==== Status Bar ====
+        statusBar = new JLabel();
+        statusBar.setFont(FONT_STATUS);
+        statusBar.setBackground(COLOR_BG_STATUS);
+        statusBar.setOpaque(true);
+        statusBar.setHorizontalAlignment(JLabel.LEFT);
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+        statusBar.setForeground(Color.WHITE);
+
+        resetButton = new JButton("Reset Game");
+        resetButton.setBackground(new Color(14, 51, 107));
+        resetButton.setForeground(Color.WHITE);
+        resetButton.setFocusPainted(false);
+        resetButton.setPreferredSize(new Dimension(115, 30));
+        resetButton.addActionListener(e -> newGame());
+
+        // ==== Panel Bawah ====
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setBackground(COLOR_BG_STATUS);
+        bottomPanel.add(statusBar, BorderLayout.CENTER);
+        bottomPanel.add(resetButton, BorderLayout.EAST);
+        super.add(bottomPanel, BorderLayout.PAGE_END);
+
         super.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -76,7 +103,7 @@ public class GameMain extends JPanel {
             }
         });
 
-        statusBar = new JLabel();
+//        statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setOpaque(true);
@@ -84,8 +111,8 @@ public class GameMain extends JPanel {
         statusBar.setHorizontalAlignment(JLabel.LEFT);
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
-        super.setLayout(new BorderLayout());
-        super.add(statusBar, BorderLayout.PAGE_END);
+//        super.setLayout(new BorderLayout());
+//        super.add(statusBar, BorderLayout.PAGE_END);
         super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
         super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
