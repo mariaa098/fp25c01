@@ -8,16 +8,17 @@ public class GameMain extends JPanel {
     private static final long serialVersionUID = 1L;
 
     public static final String TITLE = "Tic Tac Toe";
-    public static final Color COLOR_BG = new Color(245, 245, 250);
-    public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
-    public static final Color COLOR_CROSS = new Color(102, 51, 153);
-    public static final Color COLOR_NOUGHT = new Color(255, 127, 80);
+    public static final Color COLOR_BG = new Color(246, 246, 246);
+    public static final Color COLOR_BG_STATUS = new Color(69, 73, 74);
+    public static final Color COLOR_CROSS = new Color(182   , 212, 255);
+    public static final Color COLOR_NOUGHT = new Color(14, 51, 107);
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
     private Board board;
     private State currentState;
     private Seed currentPlayer;
     private JLabel statusBar;
+
 
     private AIPlayer aiPlayer;
     private boolean vsAI = true;
@@ -152,16 +153,16 @@ public class GameMain extends JPanel {
         board.paint(g);
 
         if (currentState == State.PLAYING) {
-            statusBar.setForeground(Color.BLACK);
+            statusBar.setForeground(Color.white);
             statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
         } else if (currentState == State.DRAW) {
-            statusBar.setForeground(Color.black);
+            statusBar.setForeground(Color.white);
             statusBar.setText("It's a Draw! Click to play again.");
         } else if (currentState == State.CROSS_WON) {
-            statusBar.setForeground(new Color(102, 51, 153));
+            statusBar.setForeground(new Color(255   , 255, 255));
             statusBar.setText("'X' Won! Click to play again.");
         } else if (currentState == State.NOUGHT_WON) {
-            statusBar.setForeground(new Color(255, 127, 80));
+            statusBar.setForeground(new Color(255,255,255));
             statusBar.setText("'O' Won! Click to play again.");
         }
     }
@@ -199,27 +200,57 @@ public class GameMain extends JPanel {
     }
 
     public static void main(String[] args) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+
+            UIManager.put("OptionPane.background", new Color(40, 44, 52));
+            UIManager.put("Panel.background", new Color(40, 44, 52));
+            UIManager.put("OptionPane.messageForeground", Color.WHITE);
+            UIManager.put("Button.background", new Color(200, 200, 200));
+            UIManager.put("Button.foreground", Color.BLACK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         javax.swing.SwingUtilities.invokeLater(() -> {
 
-            String player1 = "";
-            while (player1 == null || player1.trim().isEmpty()) {
-                player1 = JOptionPane.showInputDialog(null, "Player 1 (X):", "Nama Player 1", JOptionPane.PLAIN_MESSAGE);
-                if (player1 == null) System.exit(0); // user cancel
+            String player1 = "", player2 = "";
+            while (player1.trim().isEmpty()) {
+                PlayerNamePopupSingle popup1 = new PlayerNamePopupSingle(
+                        null, "Player 1", "Masukkan nama Player 1 (X):", new Color(69, 73, 74)
+                );
+                popup1.setVisible(true);
+                if (!popup1.isSubmitted()) System.exit(0); // Cancel ditekan
+
+                player1 = popup1.getName();
                 if (player1.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nama tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null, "Nama Player 1 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
 
+            // LOOP UNTUK PLAYER 2
+            while (player2.trim().isEmpty()) {
+                PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
+                        null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
+                );
+                popup2.setVisible(true);
+                if (!popup2.isSubmitted()) System.exit(0); // Cancel ditekan
 
-            String player2 = "";
-            while (player2 == null || player2.trim().isEmpty()) {
-                player2 = JOptionPane.showInputDialog(null, "Player 2 (O):", "Nama Player 2", JOptionPane.PLAIN_MESSAGE);
-                if (player2 == null) System.exit(0); // user cancel
+                player2 = popup2.getName();
                 if (player2.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nama tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null, "Nama Player 2 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
 
+
+
+            System.out.println("Player 1: " + player1);
+            System.out.println("Player 2: " + player2);
             JFrame frame = new JFrame(TITLE);
             frame.setContentPane(new GameMain());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
