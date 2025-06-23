@@ -12,7 +12,7 @@ public class GameMain extends JPanel {
     public static final Color COLOR_BG_STATUS = new Color(69, 73, 74);
     public static final Color COLOR_CROSS = new Color(182   , 212, 255);
     public static final Color COLOR_NOUGHT = new Color(14, 51, 107);
-    public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
+    public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 12);
 
     private Board board;
     private State currentState;
@@ -40,7 +40,7 @@ public class GameMain extends JPanel {
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
         statusBar.setForeground(Color.WHITE);
 
-        resetButton = new JButton("Reset Game");
+        resetButton = new JButton("Restart Game");
         resetButton.setBackground(new Color(14, 51, 107));
         resetButton.setForeground(Color.WHITE);
         resetButton.setFocusPainted(false);
