@@ -117,7 +117,6 @@ public class GameMain extends JPanel {
         super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
         initGame();
-        chooseMode();
         newGame();
     }
 
@@ -270,7 +269,6 @@ public class GameMain extends JPanel {
     }
 
     public static void main(String[] args) {
-
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
@@ -283,43 +281,18 @@ public class GameMain extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         javax.swing.SwingUtilities.invokeLater(() -> {
+            GameMain gamePanel = new GameMain();
 
-            String player1 = "", player2 = "";
-            while (player1.trim().isEmpty()) {
-                PlayerNamePopupSingle popup1 = new PlayerNamePopupSingle(
-                        null, "Player 1", "Masukkan nama Player 1 (X):", new Color(69, 73, 74)
-                );
-                popup1.setVisible(true);
-                if (!popup1.isSubmitted()) System.exit(0); // Cancel ditekan
-
-                player1 = popup1.getName();
-                if (player1.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                            null, "Nama Player 1 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
-                    );
-                }
+            // Pilih mode dulu
+            gamePanel.chooseMode();
+            if (!gamePanel.vsAI) {
+                gamePanel.askPlayerNames();
             }
 
-            while (player2.trim().isEmpty()) {
-                PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
-                        null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
-                );
-                popup2.setVisible(true);
-                if (!popup2.isSubmitted()) System.exit(0); // Cancel ditekan
-
-                player2 = popup2.getName();
-                if (player2.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                            null, "Nama Player 2 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
-                    );
-                }
-            }
-
-            System.out.println("Player 1: " + player1);
-            System.out.println("Player 2: " + player2);
             JFrame frame = new JFrame(TITLE);
-            frame.setContentPane(new GameMain());
+            frame.setContentPane(gamePanel);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
