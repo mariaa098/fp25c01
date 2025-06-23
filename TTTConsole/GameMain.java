@@ -92,6 +92,7 @@ public class GameMain extends JPanel {
                             if (currentState == State.PLAYING) {
                                 currentPlayer = Seed.NOUGHT;
 
+                                repaint();  // 👉 Paksa update GUI dulu biar statusBar X turn muncul
 
                                 Timer aiTimer = new Timer(300, new ActionListener() {
                                     @Override
