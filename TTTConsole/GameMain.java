@@ -25,6 +25,9 @@ public class GameMain extends JPanel {
     private AIPlayer aiPlayer;
     private boolean vsAI = true;
 
+    private String player1Name = "Player 1";
+    private String player2Name = "Player 2";
+
     public GameMain() {
         super.setLayout(new BorderLayout());
 
@@ -88,7 +91,18 @@ public class GameMain extends JPanel {
                         if (vsAI) {
                             if (currentState == State.PLAYING) {
                                 currentPlayer = Seed.NOUGHT;
-                                aiMove();
+
+
+                                Timer aiTimer = new Timer(300, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        aiMove();
+                                        ((Timer) e.getSource()).stop();
+                                    }
+                                });
+                                aiTimer.setRepeats(false);
+                                aiTimer.start();
+
                                 return;
                             }
                             currentPlayer = Seed.CROSS;
@@ -159,7 +173,7 @@ public class GameMain extends JPanel {
                     null, "Player 1", "Masukkan nama Player 1 (X):", new Color(69, 73, 74)
             );
             popup1.setVisible(true);
-            if (!popup1.isSubmitted()) System.exit(0); // Cancel ditekan
+            if (!popup1.isSubmitted()) System.exit(0);
 
             player1 = popup1.getName();
             if (player1.trim().isEmpty()) {
@@ -168,13 +182,14 @@ public class GameMain extends JPanel {
                 );
             }
         }
+        player1Name = player1;  // simpan
 
         while (player2.trim().isEmpty()) {
             PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
                     null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
             );
             popup2.setVisible(true);
-            if (!popup2.isSubmitted()) System.exit(0); // Cancel ditekan
+            if (!popup2.isSubmitted()) System.exit(0);
 
             player2 = popup2.getName();
             if (player2.trim().isEmpty()) {
@@ -183,9 +198,7 @@ public class GameMain extends JPanel {
                 );
             }
         }
-
-        System.out.println("Player 1: " + player1);
-        System.out.println("Player 2: " + player2);
+        player2Name = player2;  // simpan
     }
 
     private void aiMove() {
@@ -216,16 +229,20 @@ public class GameMain extends JPanel {
 
         if (currentState == State.PLAYING) {
             statusBar.setForeground(Color.white);
-            statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
+            if (currentPlayer == Seed.CROSS) {
+                statusBar.setText(player1Name + "'s Turn");
+            } else {
+                statusBar.setText(player2Name + "'s Turn");
+            }
         } else if (currentState == State.DRAW) {
             statusBar.setForeground(Color.white);
             statusBar.setText("It's a Draw! Click to play again.");
         } else if (currentState == State.CROSS_WON) {
-            statusBar.setForeground(new Color(255   , 255, 255));
-            statusBar.setText("'X' Won! Click to play again.");
+            statusBar.setForeground(new Color(255, 255, 255));
+            statusBar.setText("'" + player1Name + "' Won! Click to play again.");
         } else if (currentState == State.NOUGHT_WON) {
             statusBar.setForeground(new Color(255,255,255));
-            statusBar.setText("'O' Won! Click to play again.");
+            statusBar.setText("'" + player2Name + "' Won! Click to play again.");
         }
     }
 
