@@ -287,6 +287,8 @@ public class GameMain extends JPanel {
     }
 
     public static void main(String[] args) {
+        new WelcomePopup(new JFrame()).setVisible(true);
+
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
