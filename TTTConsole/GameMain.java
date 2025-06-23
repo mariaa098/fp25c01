@@ -152,6 +152,42 @@ public class GameMain extends JPanel {
         );
         vsAI = (n == JOptionPane.YES_OPTION);
     }
+    private void askPlayerNames() {
+        String player1 = "", player2 = "";
+
+        while (player1.trim().isEmpty()) {
+            PlayerNamePopupSingle popup1 = new PlayerNamePopupSingle(
+                    null, "Player 1", "Masukkan nama Player 1 (X):", new Color(69, 73, 74)
+            );
+            popup1.setVisible(true);
+            if (!popup1.isSubmitted()) System.exit(0); // Cancel ditekan
+
+            player1 = popup1.getName();
+            if (player1.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null, "Nama Player 1 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+
+        while (player2.trim().isEmpty()) {
+            PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
+                    null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
+            );
+            popup2.setVisible(true);
+            if (!popup2.isSubmitted()) System.exit(0); // Cancel ditekan
+
+            player2 = popup2.getName();
+            if (player2.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null, "Nama Player 2 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+
+        System.out.println("Player 1: " + player1);
+        System.out.println("Player 2: " + player2);
+    }
 
     private void aiMove() {
         int[] move = aiPlayer.move();
@@ -226,11 +262,12 @@ public class GameMain extends JPanel {
         }
     }
     private void restartGame() {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        topFrame.dispose();
-        main(null);
+        chooseMode();
+        if (!vsAI) {
+            askPlayerNames();
+        }
+        newGame();
     }
-
 
     public static void main(String[] args) {
 
@@ -264,7 +301,6 @@ public class GameMain extends JPanel {
                 }
             }
 
-            // LOOP UNTUK PLAYER 2
             while (player2.trim().isEmpty()) {
                 PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
                         null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
@@ -279,8 +315,6 @@ public class GameMain extends JPanel {
                     );
                 }
             }
-
-
 
             System.out.println("Player 1: " + player1);
             System.out.println("Player 2: " + player2);
