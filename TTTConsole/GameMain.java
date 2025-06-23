@@ -25,8 +25,8 @@ public class GameMain extends JPanel {
     private AIPlayer aiPlayer;
     private boolean vsAI = true;
 
-    private String player1Name = "Player 1";
-    private String player2Name = "Player 2";
+    private String player1Name = "Player";
+    private String player2Name = "AI";
 
     public GameMain() {
         super.setLayout(new BorderLayout());
