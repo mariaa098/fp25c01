@@ -325,7 +325,6 @@ public class GameMain extends JPanel {
         javax.swing.SwingUtilities.invokeLater(() -> {
 
             GameMain gamePanel = new GameMain();
-            gamePanel.playSound("opening.wav");
 
             // Pilih mode dulu
             gamePanel.chooseMode();
