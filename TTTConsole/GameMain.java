@@ -42,7 +42,7 @@ public class GameMain extends JPanel {
         resetButton.setForeground(Color.WHITE);
         resetButton.setFocusPainted(false);
         resetButton.setPreferredSize(new Dimension(115, 30));
-        resetButton.addActionListener(e -> newGame());
+        resetButton.addActionListener(e -> restartGame());
 
         // ==== Panel Bawah ====
         JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -225,6 +225,12 @@ public class GameMain extends JPanel {
                 break;
         }
     }
+    private void restartGame() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
+        main(null);
+    }
+
 
     public static void main(String[] args) {
 
