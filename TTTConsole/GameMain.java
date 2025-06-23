@@ -231,7 +231,6 @@ public class GameMain extends JPanel {
         main(null);
     }
 
-
     public static void main(String[] args) {
 
         try {
@@ -264,7 +263,6 @@ public class GameMain extends JPanel {
                 }
             }
 
-            // LOOP UNTUK PLAYER 2
             while (player2.trim().isEmpty()) {
                 PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
                         null, "Player 2", "Masukkan nama Player 2 (O):", new Color(69, 73, 74)
@@ -279,8 +277,6 @@ public class GameMain extends JPanel {
                     );
                 }
             }
-
-
 
             System.out.println("Player 1: " + player1);
             System.out.println("Player 2: " + player2);
