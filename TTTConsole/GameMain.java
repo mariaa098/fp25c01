@@ -176,7 +176,7 @@ public class GameMain extends JPanel {
             popup1.setVisible(true);
             if (!popup1.isSubmitted()) System.exit(0);
 
-            player1 = popup1.getName();
+            player1 = popup1.getPlayerName();
             if (player1.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(
                         null, "Nama Player 1 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
@@ -192,7 +192,7 @@ public class GameMain extends JPanel {
             popup2.setVisible(true);
             if (!popup2.isSubmitted()) System.exit(0);
 
-            player2 = popup2.getName();
+            player2 = popup2.getPlayerName();
             if (player2.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(
                         null, "Nama Player 2 tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE
@@ -301,6 +301,7 @@ public class GameMain extends JPanel {
         }
 
         javax.swing.SwingUtilities.invokeLater(() -> {
+
             GameMain gamePanel = new GameMain();
 
             // Pilih mode dulu
@@ -308,6 +309,13 @@ public class GameMain extends JPanel {
             if (!gamePanel.vsAI) {
                 gamePanel.askPlayerNames();
             }
+
+
+
+            System.out.println("Player 1: " + gamePanel.player1Name);
+            System.out.println("Player 2: " + gamePanel.player2Name);
+            DatabaseHelper.insertPlayers(gamePanel.player1Name, gamePanel.player2Name);
+
 
             JFrame frame = new JFrame(TITLE);
             frame.setContentPane(gamePanel);

@@ -72,7 +72,7 @@ public class PlayerNamePopupSingle extends JDialog {
         return submitted;
     }
 
-    public String getName() {
+    public String getPlayerName() {
         return nameField.getText().trim();
     }
 }

@@ -10,7 +10,7 @@ public class MyJDBC {
         String host, port, databaseName, userName, password;
         host = "mysql-ca7261b-mariaaarumm-b88a.b.aivencloud.com";
         port = "23795";
-        databaseName = "defaultdb";
+        databaseName = "username_schema";
         userName = "avnadmin";
         password = "AVNS_6U60N7PNhw8VCEOa4Ry";
 
