@@ -269,7 +269,7 @@ public class GameMain extends JPanel {
         switch (gameState) {
             case CROSS_WON:
             case NOUGHT_WON:
-                playSound("winning10s.wav");
+                playSound("sound_win.wav");
                 break;
             case DRAW:
                 playSound("sound_draw.wav");
@@ -286,10 +286,30 @@ public class GameMain extends JPanel {
         newGame();
     }
 
+    public static void playStartupMusic() {
+        try {
+            InputStream audioSrc = GameMain.class.getResourceAsStream("opening.wav");
+            if (audioSrc == null) {
+                System.err.println("File opening.wav tidak ditemukan.");
+                return;
+            }
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(audioSrc));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void main(String[] args) {
+
+        playStartupMusic();
         new WelcomePopup(new JFrame()).setVisible(true);
 
         try {
+
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
             UIManager.put("OptionPane.background", new Color(40, 44, 52));
@@ -305,6 +325,7 @@ public class GameMain extends JPanel {
         javax.swing.SwingUtilities.invokeLater(() -> {
 
             GameMain gamePanel = new GameMain();
+            gamePanel.playSound("opening.wav");
 
             // Pilih mode dulu
             gamePanel.chooseMode();
