@@ -10,6 +10,9 @@ public class WelcomePopup extends JDialog {
         label.setForeground(Color.WHITE);
 
         JButton okButton = new JButton("OK");
+        okButton.setBackground(new Color(0, 150, 136)); // Warna latar (teal)
+        okButton.setForeground(Color.WHITE);            // Warna teks
+        okButton.setFocusPainted(false);
         okButton.addActionListener(e -> dispose());
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -21,5 +24,13 @@ public class WelcomePopup extends JDialog {
         setSize(300, 200);
         setLocationRelativeTo(parent);
         setResizable(false);
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
     }
 }

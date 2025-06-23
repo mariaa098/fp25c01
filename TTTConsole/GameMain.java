@@ -40,7 +40,7 @@ public class GameMain extends JPanel {
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
         statusBar.setForeground(Color.WHITE);
 
-        resetButton = new JButton("Restart Game");
+        resetButton = new JButton("New Game");
         resetButton.setBackground(new Color(14, 51, 107));
         resetButton.setForeground(Color.WHITE);
         resetButton.setFocusPainted(false);
@@ -165,6 +165,7 @@ public class GameMain extends JPanel {
                 options[0]
         );
         vsAI = (n == JOptionPane.YES_OPTION);
+
     }
     private void askPlayerNames() {
         String player1 = "", player2 = "";
