@@ -337,6 +337,7 @@ public class GameMain extends JPanel {
             if (!gamePanel.vsAI) {
                 gamePanel.askPlayerNames();
             }
+            DatabaseHelper.insertHistory(gamePanel.player1Name, gamePanel.player2Name);
 
 
 
