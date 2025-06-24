@@ -164,6 +164,11 @@ public class GameMain extends JPanel {
                 options,
                 options[0]
         );
+
+        if (n == JOptionPane.CLOSED_OPTION) {
+            System.exit(0); // Keluar jika user klik tombol X
+        }
+
         vsAI = (n == JOptionPane.YES_OPTION);
 
     }
