@@ -31,7 +31,6 @@ public class GameMain extends JPanel {
     public GameMain() {
         super.setLayout(new BorderLayout());
 
-        // ==== Status Bar ====
         statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
@@ -117,7 +116,6 @@ public class GameMain extends JPanel {
             }
         });
 
-//        statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
         statusBar.setOpaque(true);
@@ -125,8 +123,6 @@ public class GameMain extends JPanel {
         statusBar.setHorizontalAlignment(JLabel.LEFT);
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
-//        super.setLayout(new BorderLayout());
-//        super.add(statusBar, BorderLayout.PAGE_END);
         super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
         super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
@@ -165,7 +161,7 @@ public class GameMain extends JPanel {
         );
 
         if (n == JOptionPane.CLOSED_OPTION) {
-            System.exit(0); // Keluar jika user klik tombol X
+            System.exit(0);
         }
 
         vsAI = (n == JOptionPane.YES_OPTION);
@@ -188,7 +184,7 @@ public class GameMain extends JPanel {
                 );
             }
         }
-        player1Name = player1;  // simpan
+        player1Name = player1;
 
         while (player2.trim().isEmpty()) {
             PlayerNamePopupSingle popup2 = new PlayerNamePopupSingle(
@@ -204,7 +200,7 @@ public class GameMain extends JPanel {
                 );
             }
         }
-        player2Name = player2;  // simpan
+        player2Name = player2;
     }
 
     private void aiMove() {
