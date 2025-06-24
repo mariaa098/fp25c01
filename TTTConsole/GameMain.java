@@ -12,7 +12,7 @@ public class GameMain extends JPanel {
     public static final Color COLOR_BG_STATUS = new Color(69, 73, 74);
     public static final Color COLOR_CROSS = new Color(182   , 212, 255);
     public static final Color COLOR_NOUGHT = new Color(14, 51, 107);
-    public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 12);
+    public static final Font FONT_STATUS = new Font("OhhCR A Extended", Font.PLAIN, 12);
 
     private Board board;
     private State currentState;
@@ -47,7 +47,6 @@ public class GameMain extends JPanel {
         resetButton.setPreferredSize(new Dimension(115, 30));
         resetButton.addActionListener(e -> restartGame());
 
-        // ==== Panel Bawah ====
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(COLOR_BG_STATUS);
         bottomPanel.add(statusBar, BorderLayout.CENTER);
@@ -92,7 +91,7 @@ public class GameMain extends JPanel {
                             if (currentState == State.PLAYING) {
                                 currentPlayer = Seed.NOUGHT;
 
-                                repaint();  // 👉 Paksa update GUI dulu biar statusBar X turn muncul
+                                repaint();
 
                                 Timer aiTimer = new Timer(300, new ActionListener() {
                                     @Override
@@ -332,7 +331,6 @@ public class GameMain extends JPanel {
 
             GameMain gamePanel = new GameMain();
 
-            // Pilih mode dulu
             gamePanel.chooseMode();
             if (!gamePanel.vsAI) {
                 gamePanel.askPlayerNames();

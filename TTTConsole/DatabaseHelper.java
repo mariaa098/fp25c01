@@ -61,10 +61,4 @@ public class DatabaseHelper {
 
         return list;
     }
-
-
-
-
-
-
 }

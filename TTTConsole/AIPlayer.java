@@ -2,9 +2,9 @@ public abstract class AIPlayer {
     protected int ROWS = Board.ROWS;
     protected int COLS = Board.COLS;
 
-    protected Cell[][] cells; // papan permainan
-    protected Seed mySeed;    // simbol komputer (X atau O)
-    protected Seed oppSeed;   // simbol lawan
+    protected Cell[][] cells;
+    protected Seed mySeed;
+    protected Seed oppSeed;
 
     public AIPlayer(Board board) {
         this.cells = board.cells;

@@ -21,7 +21,6 @@ public class AIPlayerTableLookup extends AIPlayer {
                 return move;
             }
         }
-        // Seharusnya tidak terjadi jika permainan masih berlangsung
         throw new IllegalStateException("No moves left!");
     }
 }
