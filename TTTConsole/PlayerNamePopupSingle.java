@@ -44,7 +44,6 @@ public class PlayerNamePopupSingle extends JDialog {
             }
         });
 
-        // Aktifkan ENTER untuk OK
         getRootPane().setDefaultButton(okButton);
 
         JButton cancelButton = new JButton("Cancel");

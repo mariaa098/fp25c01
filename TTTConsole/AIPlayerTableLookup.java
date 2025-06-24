@@ -1,6 +1,5 @@
 public class AIPlayerTableLookup extends AIPlayer {
 
-    // Urutan preferensi posisi {row, col}
     private final int[][] preferredMoves = {
             {1, 1}, {0, 0}, {0, 2}, {2, 0}, {2, 2},
             {0, 1}, {1, 0}, {1, 2}, {2, 1}
@@ -10,10 +9,7 @@ public class AIPlayerTableLookup extends AIPlayer {
         super(board);
     }
 
-    /**
-     * Cari sel kosong pertama berdasarkan urutan preferensi
-     * @return int[2] {row, col}
-     */
+
     @Override
     public int[] move() {
         for (int[] move : preferredMoves) {

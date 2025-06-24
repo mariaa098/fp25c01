@@ -9,7 +9,6 @@ public class DatabaseHelper {
     private static final String DB_USER = "avnadmin";
     private static final String DB_PASS = "AVNS_6U60N7PNhw8VCEOa4Ry";
 
-    // Method untuk insert nama player ke database
     public static void insertPlayers(String player1, String player2) {
         String query = "INSERT INTO players (player1, player2) VALUES (?, ?)";
 
